@@ -1,5 +1,6 @@
+#This scirpt is designed to change permissions on folders that have permission denied.  Requries a domain/enterprise admin account with the ability to take ownership of files.
 param (
-# CSV Input
+# Input CSV file
 [Parameter(Mandatory)]
 [String]
 $csv,
