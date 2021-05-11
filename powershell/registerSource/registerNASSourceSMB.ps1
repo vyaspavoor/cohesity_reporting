@@ -1,10 +1,10 @@
 #This powershell script it to register genericNasSource
 [CmdletBinding()]
 param (
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$True, HelpMessage = "Please enter the cluster ID")]
     [String]
     $ClusterFQDN, 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory=$True, HelpMessage="Please enter the CSV with teh list of NAS shares. Requires a hostname and path column")]
     [String]
     $NASList
 )
