@@ -9,20 +9,21 @@ param (
     $NASList
 )
 $ErrorActionPreference = "Stop";
-try{
-    $credcoh = Get-Credential -Message "enter this"
-    Connect-CohesityCluster -Server $ClusterFQDN -Credential $cred
-}
-catch{Write-Output "Could not connect to the Cohesity Cluster.  Please make sure that the cluster FQDN or VIP is correct"}
+$credcoh = Get-Credential -Message "Enter the Cohesity cluster credentials. "
+$credSMB = Get-Credential -M "Please enter domain admin credentials with access to the SMB Shares"
 $ValidPath = Test-Path $NASList
+try{Connect-CohesityCluster -Server $ClusterFQDN -Credential $credcoh}
+catch{Write-Output "Could not connect to the Cohesity Cluster.  Please make sure that the cluster FQDN or VIP is correct"}
+
 try{  
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
             $NASHostName = $_.'Hostname'
             $NASPath = $_.'Path'
-            $Path ='\\'+ $NasHostName + '\' + $NASHostName
-            Write-Output $Path
-            
+            $Path ='\\'+ $NasHostName + '\' + $NASPath
+            #Write-Output $Path
+            try{Register-CohesityProtectionSourceSMB -MountPath $Path -Credential $credSMB}
+            catch{Write-Out "There was a problem Registering the host.  Check that the path and host are correct"}
         }
     }
     else {
@@ -30,8 +31,5 @@ try{
     }    
 }
 catch{Write-Out "There was a problem importing the CSV"}
-$credSMB = Get-Credential -M "Please enter domain admin credentials with accessto SMB"
-try{
-    Register-CohesityProtectionSourceSMB -MountPath $Path -Credential $credSMB
-}
-catch{Write-Out "There was a problem Registering the host.  Check that the path and host are correct"}
+
+
