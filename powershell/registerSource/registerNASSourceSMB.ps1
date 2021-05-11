@@ -10,7 +10,7 @@ param (
 )
 $ErrorActionPreference = "Stop";
 try{
-    $cred = Get-Credential -Message "enter this"
+    $credcoh = Get-Credential -Message "enter this"
     Connect-CohesityCluster -Server $ClusterFQDN -Credential $cred
 }
 catch{Write-Output "Could not connect to the Cohesity Cluster.  Please make sure that the cluster FQDN or VIP is correct"}
@@ -22,11 +22,16 @@ try{
             $NASPath = $_.'Path'
             $Path ='\\'+ $NasHostName + '\' + $NASHostName
             Write-Output $Path
-    #Register-CohesityProtectionSourceSMB
+            
         }
     }
     else {
         Write-Output "The file $NASList is not a valid file"
     }    
 }
-catch{}
+catch{Write-Out "There was a problem importing the CSV"}
+$credSMB = Get-Credential -M "Please enter domain admin credentials with accessto SMB"
+try{
+    Register-CohesityProtectionSourceSMB -MountPath $Path -Credential $credSMB
+}
+catch{Write-Out "There was a problem Registering the host.  Check that the path and host are correct"}
