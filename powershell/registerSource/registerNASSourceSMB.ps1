@@ -8,28 +8,30 @@ param (
     [String]
     $NASList
 )
-$ErrorActionPreference = "Continue";
+$ErrorActionPreference = "Stop";
 $credcoh = Get-Credential -Message "Enter the Cohesity cluster credentials. "
 $credSMB = Get-Credential -M "Please enter domain admin credentials with access to the SMB Shares"
-$ValidPath = Test-Path $NASList
+$ValidPath = Test-Path $NASList -PathType Any
 try{Connect-CohesityCluster -Server $ClusterFQDN -Credential $credcoh}
-catch{Write-Output "Could not connect to the Cohesity Cluster.  Please make sure that the cluster FQDN or VIP is correct"}
+catch{
+    Write-warning "Could not connect to the Cohesity Cluster.  Please make sure that the cluster FQDN or VIP is correct"
+    Write-warning $_.exception.message
+        }
 
 try{  
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
-            $NASHostName = $_.'Hostname'
-            $NASPath = $_.'Path'
-            $Path ='\\'+ $NasHostName + '\' + $NASPath
-            #Write-Output $Path
+            $NASHostName = $_.Hostname
+            $NASPath = $_.Path
+            $Path = '\\'+ $NasHostName + '\' + $NASPath
             try{Register-CohesityProtectionSourceSMB -MountPath $Path -Credential $credSMB}
-            catch{Write-Out "There was a problem Registering the host.  Check that the path and host are correct"}
+            catch{Write-warning $_.exception.message}
         }
     }
     else {
-        Write-Output "The file $NASList is not a valid file"
+        Write-warning "The file $NASList is not a valid file"
     }    
 }
-catch{Write-Out "There was a problem importing the CSV"}
-
+catch{Write-warning $_.exception.message}
+Disconnect-CohesityCluster
 
