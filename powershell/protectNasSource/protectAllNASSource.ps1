@@ -13,7 +13,8 @@ param (
 )
 $ErrorActionPreference = "Stop";
 $credcoh = Get-Credential -Message "Enter the Cohesity cluster credentials. "
-$LogFile = New-Item -itemType File -Name ("PermissionChangeLog_" + $FileName + ".log")
+$FileName = (Get-Date).tostring("dd-MM-yyyy-hh-mm-ss")
+$LogFile = New-Item -itemType File -Name ("ProtectListNasSources_" + $FileName + ".log")
 try{Connect-CohesityCluster -Server $ClusterFQDN -Credential $credcoh}
 catch{Write-warning $_.exception.message}
 

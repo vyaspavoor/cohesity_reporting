@@ -12,7 +12,8 @@ $ErrorActionPreference = "Stop";
 $credcoh = Get-Credential -Message "Enter the Cohesity cluster credentials. "
 $credSMB = Get-Credential -M "Please enter domain admin credentials with access to the SMB Shares"
 $ValidPath = Test-Path $NASList -PathType Any
-$LogFile = New-Item -itemType File -Name ("PermissionChangeLog_" + $FileName + ".log")
+$FileName = (Get-Date).tostring("dd-MM-yyyy-hh-mm-ss")
+$LogFile = New-Item -itemType File -Name ("RegisterSMBSource" + $FileName + ".log")
 try{Connect-CohesityCluster -Server $ClusterFQDN -Credential $credcoh}
 catch{
     Write-warning "Could not connect to the Cohesity Cluster.  Please make sure that the cluster FQDN or VIP is correct"
