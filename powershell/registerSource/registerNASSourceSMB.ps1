@@ -8,7 +8,7 @@ param (
     [String]
     $NASList
 )
-$ErrorActionPreference = "Stop";
+$ErrorActionPreference = "Continue";
 $credcoh = Get-Credential -Message "Enter the Cohesity cluster credentials. "
 $credSMB = Get-Credential -M "Please enter domain admin credentials with access to the SMB Shares"
 $ValidPath = Test-Path $NASList
