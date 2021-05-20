@@ -1,4 +1,4 @@
-#This powershell script it to register genericNasSource
+#This powershell script it to register protect a generic nas
 [CmdletBinding()]
 param (
     [Parameter(Mandatory=$True, HelpMessage = "Please enter the cluster ID")]

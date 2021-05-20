@@ -32,6 +32,5 @@ try{
     }    
 }
 catch{Write-warning $_.exception.message}
-#get-cohesityprotectionjob
-#Restore-CohesityBackupToView  -SourceName $Path -TargetViewName $Nasname -QOSPolicy 'TestAndDev High' -ProtectionJobName $NasName
+
 Disconnect-CohesityCluster
