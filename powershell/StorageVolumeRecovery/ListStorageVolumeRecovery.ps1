@@ -21,9 +21,10 @@ try{
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
             $NasName = $_.Hostname + '\' + $_.Path
-            #$Path = '\\'+ $NasName
-            try{Restore-CohesityBackupToView  -TargetViewName $Nasname -QOSPolicy 'TestAndDev High' -ProtectionJobName $Nasname | Tee-Object -file $LogFile -Append}
+            $Path = '\\'+ $NasName
+            try{Restore-CohesityBackupToView -SourceName $Path -TargetViewName $Nasname -QOSPolicy 'TestAndDev High' -ProtectionJobName $Nasname | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
+            
         }
     }
     else {
@@ -31,5 +32,6 @@ try{
     }    
 }
 catch{Write-warning $_.exception.message}
-#Restore-CohesityBackupToView  -TargetViewName $Nasname -QOSPolicy 'TestAndDev High' -ProtectionJobName $Nasname
+#get-cohesityprotectionjob
+#Restore-CohesityBackupToView  -SourceName $Path -TargetViewName $Nasname -QOSPolicy 'TestAndDev High' -ProtectionJobName $NasName
 Disconnect-CohesityCluster
