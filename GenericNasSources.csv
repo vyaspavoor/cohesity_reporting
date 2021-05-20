@@ -1,4 +1,0 @@
-"protectionSource";"protectedSourcesSummary";"unprotectedSourcesSummary";"registrationInfo"
-"@{id=17; name=\\10.26.0.83\\HNASAuditLogs; environment=kGenericNas; nasProtectionSource=}";"System.Object[]";"System.Object[]";"@{accessInfo=; registrationTimeUsecs=1620744379931987; refreshTimeUsecs=1620744379931987; nasMountCredentials=; isDbAuthenticated=False}"
-"@{id=19; name=\\10.26.0.83\\LogrhythmArchives; environment=kGenericNas; nasProtectionSource=}";"System.Object[]";"System.Object[]";"@{accessInfo=; registrationTimeUsecs=1620744379931987; refreshTimeUsecs=1620744379931987; nasMountCredentials=; isDbAuthenticated=False}"
-"@{id=21; name=\\10.26.0.83\\ServerLogs; environment=kGenericNas; nasProtectionSource=}";"System.Object[]";"System.Object[]";"@{accessInfo=; registrationTimeUsecs=1620744379931987; refreshTimeUsecs=1620744379931987; nasMountCredentials=; isDbAuthenticated=False}"

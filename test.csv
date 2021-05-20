@@ -1,4 +1,0 @@
-﻿ Name,Comment,File System,Hostname,Path,,,
- HNASAuditLogs,StealthBits Audit L...ng - TGS 8/31/2020,HO_FS_LOGS,10.26.0.83,\HNASAuditLogs,,,
- LogrhythmArchives,LogrhythmArchives DGATES 4/9/2020,HO_FS_LOGS,10.26.0.83,\LogrhythmArchives,,,
- ServerLogs,ShareLocation for ServerLogs Captures,HO_FS_LOGS,10.26.0.83,\ServerLogs,,,
