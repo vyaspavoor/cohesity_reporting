@@ -25,7 +25,7 @@ try{
         Import-CSV $NASList | ForEach-Object{
             $NasName = $_.Hostname + '\' + $_.Path
             $Path = '\\'+ $NasName
-            try{Restore-CohesityBackupToView -SourceName $Path -TargetViewName $Nasname -QOSPolicy 'TestAndDev High' -ProtectionJobName $Nasname | Tee-Object -file $LogFile -Append}
+            try{Restore-CohesityBackupToView -SourceName $Path -TargetViewName $Nasname -QOSPolicy 'TestAndDev High' -ProtectionJobName $Nasname -TimeZone 'America/New_York' | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
             
         }
