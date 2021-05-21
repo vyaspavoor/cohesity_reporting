@@ -4,6 +4,9 @@ param (
     [Parameter(Mandatory=$True, HelpMessage = "Please enter the cluster ID")]
     [String]
     $ClusterFQDN, 
+    [Parameter(Mandatory=$True, HelpMessage = "Please enter the cluster Port")]
+    [String]
+    $ClusterPort,
     [Parameter(Mandatory=$True, HelpMessage="Please enter the CSV with teh list of NAS shares. Requires a hostname and path column")]
     [String]
     $NASList,
@@ -19,7 +22,7 @@ $credcoh = Get-Credential -Message "Enter the Cohesity cluster credentials. "
 $ValidPath = Test-Path $NASList -PathType Any
 $FileName = (Get-Date).tostring("dd-MM-yyyy-hh-mm-ss")
 $LogFile = New-Item -itemType File -Name ("ProtectionListNASSource-" + $FileName + ".log")
-try{Connect-CohesityCluster -Server $ClusterFQDN -Credential $credcoh}
+try{Connect-CohesityCluster -Server $ClusterFQDN -Port $ClusterPort -Credential $credcoh}
 catch{    Write-warning $_.exception.message}
 
 try{  
@@ -29,7 +32,8 @@ try{
             $NASPath = $_.Path
             $NasName= $NasHostName + '\' + $NASPath
             $Path = '\\'+ $NasName
-            try{New-CohesityNASProtectionJob -name $NasName -SourceName $Path -StorageDomainName $storageDomain -PolicyName $protectionPolicy -TimeZome 'America/New_York'  -Confirm:$false | Tee-Object -file $LogFile -Append}
+            $JobName = $NasName.replace('\', '-') 
+            try{New-CohesityNASProtectionJob -name $JobName -SourceName $Path -StorageDomainName $storageDomain -PolicyName $protectionPolicy -TimeZone 'America/New_York'  -Confirm:$false | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
         }
     }

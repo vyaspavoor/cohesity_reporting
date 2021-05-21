@@ -3,7 +3,10 @@
 param (
     [Parameter(Mandatory=$True, HelpMessage = "Please enter the cluster ID")]
     [String]
-    $ClusterFQDN, 
+    $ClusterFQDN,
+    [Parameter(Mandatory=$True, HelpMessage = "Please enter the cluster Port")]
+    [String]
+    $ClusterPort,
     [Parameter(Mandatory=$True, HelpMessage="Please enter the CSV with teh list of NAS shares. Requires a hostname and path column")]
     [String]
     $NASList
@@ -14,7 +17,7 @@ $credSMB = Get-Credential -M "Please enter domain admin credentials with access 
 $ValidPath = Test-Path $NASList -PathType Any
 $FileName = (Get-Date).tostring("dd-MM-yyyy-hh-mm-ss")
 $LogFile = New-Item -itemType File -Name ("RegisterSMBSource-" + $FileName + ".log")
-try{Connect-CohesityCluster -Server $ClusterFQDN -Credential $credcoh}
+try{Connect-CohesityCluster -Server $ClusterFQDN -Port $ClusterPort -Credential $credcoh}
 catch{
     Write-warning "Could not connect to the Cohesity Cluster.  Please make sure that the cluster FQDN or VIP is correct"
     Write-warning $_.exception.message
