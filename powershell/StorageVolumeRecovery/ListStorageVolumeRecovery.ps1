@@ -17,7 +17,7 @@ $ValidPath = Test-Path $NASList -PathType Any
 $FileName = (Get-Date).tostring("dd-MM-yyyy-hh-mm-ss")
 $LogFile = New-Item -itemType File -Name ("ListStorageVolumeRecovery-" + $FileName + ".log")
 
-try{Connect-CohesityCluster -Server $ClusterFQDN -Port $ClusterPort-Credential $credcoh}
+try{Connect-CohesityCluster -Server $ClusterFQDN -Port $ClusterPort -Credential $credcoh}
 catch{    Write-warning $_.exception.message}
 
 try{  
