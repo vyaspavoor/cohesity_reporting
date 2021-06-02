@@ -29,11 +29,11 @@ try{
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
             $NASHostName = $_.Hostname
-            $NASPath = $_.Path
-            $NasName= $NasHostName + '\' + $NASPath
+            $NASPath = $_.Name
+            $NasName = $NasHostName + '\' + $NASPath
             $Path = '\\'+ $NasName
             $JobName = $NasName.replace('\', '-') 
-            try{New-CohesityNASProtectionJob -name $JobName -SourceName $Path -StorageDomainName $storageDomain -PolicyName $protectionPolicy -TimeZone 'America/New_York'  -Confirm:$false | Tee-Object -file $LogFile -Append}
+            try{New-CohesityNASProtectionJob -name $JobName -SourceName $Path -StorageDomainName $storageDomain -PolicyName $protectionPolicy -TimeZone 'America/Los_Angeles'  -Confirm:$false | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
         }
     }

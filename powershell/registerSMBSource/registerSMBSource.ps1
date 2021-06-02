@@ -27,7 +27,7 @@ try{
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
             $NASHostName = $_.Hostname
-            $NASPath = $_.Path
+            $NASPath = $_.Name
             $NasName= $NasHostName + '\' + $NASPath
             $Path = '\\'+ $NasName
             try{Register-CohesityProtectionSourceSMB -MountPath $Path -Credential $credSMB | Tee-Object -file $LogFile -Append}
