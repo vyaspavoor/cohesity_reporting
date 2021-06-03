@@ -26,7 +26,7 @@ try{
             #$Hostname = $_.Hostname
             #$NasName = $_.Hostname + '\' + $_.Path
             #$Path = '\\'+ $NasName
-            try{Restore-CohesityBackupToView -TargetViewName $_.Path -QOSPolicy 'TestAndDev High' -ProtectionJobName $_.Hostname | Tee-Object -file $LogFile -Append}
+            try{Restore-CohesityBackupToView -TargetViewName $_.Name -QOSPolicy 'TestAndDev High' -ProtectionJobName $_.Hostname | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
            
         }
