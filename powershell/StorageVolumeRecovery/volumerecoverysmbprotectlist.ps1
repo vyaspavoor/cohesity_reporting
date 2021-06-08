@@ -30,7 +30,9 @@ catch{    Write-warning $_.exception.message}
 try{  
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
-            try{Restore-CohesityBackupToView -TargetViewName $_.Name -QOSPolicy 'TestAndDev High' -ProtectionJobName $_.Hostname | Tee-Object -file $LogFile -Append}
+        $NasName = $_.Hostname + '\' + $_.Path
+        $Path = '\\'+ $NasName   
+        try{Restore-CohesityBackupToView -SourceName $Path -TargetViewName $_.Name -QOSPolicy 'TestAndDev High' -ProtectionJobName $_.Hostname | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
            
         }
@@ -59,9 +61,9 @@ try{
         Import-CSV $NASList | ForEach-Object{
             $View = Get-CohesityView -ViewNames $_.Name
             $sourceviewid = $View.ViewId
-            
-            #try{New-CohesityProtectionJob -name $_.Name -StorageDomainName $storageDomain -PolicyName $protectionPolicy -TimeZone 'America/Los_Angeles' -ViewName $_.Name -Environment kView | Tee-Object -file $LogFile -Append}
-            #catch{Write-warning $_.exception.message}
+            write-output $sourceviewid
+            try{New-CohesityProtectionJob -name $_.Name -StorageDomainName $storageDomain -PolicyName $protectionPolicy -TimeZone 'America/Los_Angeles' -ViewName $_.Name -Environment kView | Tee-Object -file $LogFile -Append}
+            catch{Write-warning $_.exception.message}
         } 
     }
     else {
@@ -69,5 +71,4 @@ try{
     }    
 }
 catch{Write-warning $_.exception.message}
-
 Disconnect-CohesityCluster
