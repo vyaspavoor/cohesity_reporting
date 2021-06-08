@@ -1,4 +1,4 @@
-#This powershell script it to register genericNasSource
+#This powershell script it to register and protect genericNasSource
 [CmdletBinding()]
 param (
     [Parameter(Mandatory=$True, HelpMessage = "Please enter the cluster ID")]
@@ -47,8 +47,8 @@ try{
             $JobName = $NasName.replace('\', '-') 
             try{New-CohesityNASProtectionJob -name $JobName -SourceName $Path -StorageDomainName $storageDomain -PolicyName $protectionPolicy -TimeZone 'America/Los_Angeles'  -Confirm:$false | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
+        }
     }
-}
     else {
         Write-warning "The file $NASList is not a valid file"
     }    
