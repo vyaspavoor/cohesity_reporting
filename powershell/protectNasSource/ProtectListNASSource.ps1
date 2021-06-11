@@ -28,7 +28,7 @@ catch{    Write-warning $_.exception.message}
 try{  
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
-          $NASHostName = $_.Hostname
+            $NASHostName = $_.Hostname
             $NASPath = $_.Name
             $NasName = $NasHostName + '\' + $NASPath
             $Path = '\\'+ $NasName
