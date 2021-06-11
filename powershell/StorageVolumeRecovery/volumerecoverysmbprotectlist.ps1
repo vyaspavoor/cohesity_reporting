@@ -30,9 +30,12 @@ catch{    Write-warning $_.exception.message}
 try{  
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
-        $NasName = $_.Hostname + '\' + $_.Path
-        $Path = '\\'+ $NasName   
-        try{Restore-CohesityBackupToView -SourceName $Path -TargetViewName $_.Name -QOSPolicy 'TestAndDev High' -ProtectionJobName $_.Hostname | Tee-Object -file $LogFile -Append}
+        $NASHostName = $_.Hostname
+        $NASPath = $_.Name
+        $NasName = $NasHostName + '\' + $NASPath
+        $Path = '\\'+ $NasName
+        $JobName = $NasName.replace('\', '-')  
+        try{Restore-CohesityBackupToView -SourceName $Path -TargetViewName $_.Name -QOSPolicy 'TestAndDev High' -ProtectionJobName $JobName | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
            
         }
