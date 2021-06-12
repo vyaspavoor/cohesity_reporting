@@ -22,7 +22,11 @@ catch{    Write-warning $_.exception.message}
 try{  
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
-            try{Start-CohesityProtectionJob -Name $_.Name | Tee-Object -file $LogFile -Append}
+            $NASHostName = $_.Hostname
+            $NASPath = $_.Name
+            $NasName= $NasHostName + '\' + $NASPath
+            $JobName = $NasName.replace('\', '-') 
+            try{Start-CohesityProtectionJob -Name $jobName | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
         }
     }
