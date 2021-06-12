@@ -23,12 +23,12 @@ $ValidPath = Test-Path $NASList -PathType Any
 $FileName = (Get-Date).tostring("dd-MM-yyyy-hh-mm-ss")
 $LogFile = New-Item -itemType File -Name ("ProtectionListNASSource-" + $FileName + ".log")
 try{Connect-CohesityCluster -Server $ClusterFQDN -Port $ClusterPort -Credential $credcoh}
-catch{    Write-warning $_.exception.message}
+catch{Write-warning $_.exception.message}
 
 try{  
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
-            $NASHostName = $_.Hostname
+          $NASHostName = $_.Hostname
             $NASPath = $_.Name
             $NasName = $NasHostName + '\' + $NASPath
             $Path = '\\'+ $NasName
