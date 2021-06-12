@@ -21,19 +21,14 @@ $ErrorActionPreference = "Stop";
 $credcoh = Get-Credential -Message "Enter the Cohesity cluster credentials. "
 $ValidPath = Test-Path $NASList -PathType Any
 $FileName = (Get-Date).tostring("dd-MM-yyyy-hh-mm-ss")
-$LogFile = New-Item -itemType File -Name ("ProtectionListNASSource-" + $FileName + ".log")
+$LogFile = New-Item -itemType File -Name ("ProtectionRunListNASSource-" + $FileName + ".log")
 try{Connect-CohesityCluster -Server $ClusterFQDN -Port $ClusterPort -Credential $credcoh}
 catch{    Write-warning $_.exception.message}
 
 try{  
     if ($ValidPath -eq $True){
         Import-CSV $NASList | ForEach-Object{
-            $NASHostName = $_.Hostname
-            $NASPath = $_.Path
-            $NasName= $NasHostName + '\' + $NASPath
-            $Path = '\\'+ $NasName
-            $JobName = $NasName.replace('\', '-') 
-            try{New-CohesityNASProtectionJob -name $JobName -SourceName $Path -StorageDomainName $storageDomain -PolicyName $protectionPolicy -TimeZone 'America/New_York'  -Confirm:$false | Tee-Object -file $LogFile -Append}
+            try{Start-CohesityProtectionJob -Name $_.Name | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
         }
     }
