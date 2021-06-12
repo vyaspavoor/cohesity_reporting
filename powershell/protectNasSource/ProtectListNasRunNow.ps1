@@ -9,13 +9,7 @@ param (
     $ClusterPort,
     [Parameter(Mandatory=$True, HelpMessage="Please enter the CSV with teh list of NAS shares. Requires a hostname and path column")]
     [String]
-    $NASList,
-    [Parameter(Mandatory=$True, HelpMessage="Please enter the target Storage Domain")]
-    [String]
-    $storageDomain,
-    [Parameter(Mandatory=$True, HelpMessage="Please enter the protection policy name")]
-    [String]
-    $protectionPolicy
+    $NASList
 )
 $ErrorActionPreference = "Stop";
 $credcoh = Get-Credential -Message "Enter the Cohesity cluster credentials. "
