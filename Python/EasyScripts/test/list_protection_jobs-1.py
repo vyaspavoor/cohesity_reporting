@@ -36,16 +36,6 @@ class ProtectionJobsList(object):
             strftime('%m-%d-%Y %H:%M:%S')
         return date
 
-class EnvironmentProtectionJobList(ProtectionJobsList):
-   
-    def display_vm_protection_job(self, environment):
-        """
-        Method to display a list of VM Protection Jobs
-        Inherited from display_protection_jobs)
-        :param environment(string)
-        """
-        super().display_protection_jobs(environment)
-        
     
 
 
