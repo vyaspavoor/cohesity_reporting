@@ -26,6 +26,8 @@ $LogFile = New-Item -itemType File -Name ("ListStorageVolumeRecovery-" + $FileNa
 #Connect to Cluster
 try{Connect-CohesityCluster -Server $ClusterFQDN -Port $ClusterPort -Credential $credcoh}
 catch{    Write-warning $_.exception.message}
+#Create Remote Cluster Connection
+$replication = (Get-CohesityCluster)
 #Storage Volume Recovery
 try{  
     if ($ValidPath -eq $True){
