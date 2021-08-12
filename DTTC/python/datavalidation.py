@@ -55,7 +55,14 @@ def main():
     #print(dir(latest_run))
 
     for run in latest_run:
-        print(run.backup_run.stats.start_time_usecs)
+        protection_job = cc.protection_jobs.get_protection_job_by_id(run.job_id)
+        protection_job_name = protection_job.name
+        source_id = protection_job.source_ids
+        #print(dir(source_id))
+        for id in source_id:
+            # print(id)
+            source = cc.protection_sources.get_protection_sources_object_by_id(id)
+            print("The proetectoin source name is {source_name} the protection job name is {job_name} and the protection run id is {run_id}".format(source_name=source.name, job_name=protection_job_name, run_id=run.backup_run.job_run_id))
 
 
 
