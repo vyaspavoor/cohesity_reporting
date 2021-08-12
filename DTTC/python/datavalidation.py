@@ -22,6 +22,9 @@ class CohesityUserAuthentication(object):
     def user_auth(self):     
       return CohesityClient(self.cluster_ip, self.username, self.password, self.domain)
 
+    def  return_cluster_ip(self):
+        return self.cluster_ip
+
 class ProtectedObjects(object):
     def protection_start_time(self, cohesity_client):
         time = cohesity_client.cluster.get_cluster()
@@ -42,18 +45,13 @@ class ProtectedObjects(object):
 def main():
     cohesity_client = CohesityUserAuthentication()
     cc = cohesity_client.user_auth()
+    cluster_ip = cohesity_client.return_cluster_ip()
     protection_run = cc.protection_runs.get_protection_runs()
     protection_job = cc.protection_jobs.get_protection_jobs()
-    # print(protection_run)
-    # for run in protection_run:
-    #     print(datetime.datetime.fromtimestamp(run.backup_run.stats.start_time_usecs/10**6))
-    # time = cc.cluster.get_cluster()
-    # print(time.current_time_msecs)
 
     protected_objects = ProtectedObjects()
     latest_run = protected_objects.protection_start_time(cc)
 
-    #print(dir(latest_run))
 
     for run in latest_run:
         protection_job = cc.protection_jobs.get_protection_job_by_id(run.job_id)
@@ -64,7 +62,7 @@ def main():
             # print(id)
             source = cc.protection_sources.get_protection_sources_object_by_id(id)
             #print("The proetectoin source name is {source_name} the protection job name is {job_name} and the protection run id is {run_id}".format(source_name=source.name, job_name=protection_job_name, run_id=run.backup_run.job_run_id))
-            print(os.system("./backedUpFileList.py -v 10.26.0.159 -u gsavage -d local -s {source_name} -j {job_name} -r {run_id}".format(source_name=source.name, job_name=protection_job_name, run_id=run.backup_run.job_run_id)))
+            print(os.system("./backedUpFileList.py -v {cluster_ip} -u gsavage -d local -s {source_name} -j {job_name} -r {run_id}".format(cluster_ip=cluster_ip, source_name=source.name, job_name=protection_job_name, run_id=run.backup_run.job_run_id)))
 
 
 #run main function
