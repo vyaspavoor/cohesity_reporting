@@ -1,6 +1,7 @@
 from cohesity_management_sdk.cohesity_client import CohesityClient
 import getpass
 import datetime
+import os
 
 class CohesityUserAuthentication(object):
     
@@ -8,15 +9,15 @@ class CohesityUserAuthentication(object):
         """
         Intializing input authentication variables
         """
-        self.cluster_ip = "10.26.0.159"
-        self.username = "gsavage"
-        self.password = "GPassword2021"
-        self.domain = "local"
+        # self.cluster_ip = "10.26.0.159"
+        # self.username = "gsavage"
+        # self.password = "GPassword2021"
+        # self.domain = "local"
         
-        # self.cluster_ip = getpass._raw_input("Please enter the cluster VIP:  ")
-        # self.username = getpass._raw_input("Please Enter the username:  ") 
-        # self.password = getpass.getpass(prompt='Please enter the user password: ', stream=None)
-        # self.domain = getpass._raw_input("Please Enter the user domain:  ")
+        self.cluster_ip = getpass._raw_input("Please enter the cluster VIP:  ")
+        self.username = getpass._raw_input("Please Enter the username:  ") 
+        self.password = getpass.getpass(prompt='Please enter the user password: ', stream=None)
+        self.domain = getpass._raw_input("Please Enter the user domain:  ")
 
     def user_auth(self):     
       return CohesityClient(self.cluster_ip, self.username, self.password, self.domain)
@@ -62,11 +63,10 @@ def main():
         for id in source_id:
             # print(id)
             source = cc.protection_sources.get_protection_sources_object_by_id(id)
-            print("The proetectoin source name is {source_name} the protection job name is {job_name} and the protection run id is {run_id}".format(source_name=source.name, job_name=protection_job_name, run_id=run.backup_run.job_run_id))
-
+            #print("The proetectoin source name is {source_name} the protection job name is {job_name} and the protection run id is {run_id}".format(source_name=source.name, job_name=protection_job_name, run_id=run.backup_run.job_run_id))
+            print(os.system("./backedUpFileList.py -v 10.26.0.159 -u gsavage -d local -s {source_name} -j {job_name} -r {run_id}".format(source_name=source.name, job_name=protection_job_name, run_id=run.backup_run.job_run_id)))
 
 
 #run main function
 if __name__ == '__main__':
     main()
-  
