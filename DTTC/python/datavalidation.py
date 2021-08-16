@@ -54,7 +54,10 @@ class ProtectedObjects(object):
             source_id = protection_job_obj.source_ids
             for id in source_id:
                 source = cohesity_client.protection_sources.get_protection_sources_object_by_id(id)
-                print(os.system("./backedUpFileList.py -v {cluster_ip} -u {cluster_user} -d {cluster_domain} -s {source_name} -j {job_name} -r {run_id}".format(cluster_ip=cluster_ip, cluster_user=cluster_user, cluster_domain=cluster_domain, source_name=source.name, job_name=protection_job_name, run_id=run.backup_run.job_run_id)), file=f)
+                print(os.system("./backedUpFileList.py -v {cluster_ip} -u {cluster_user} -d {cluster_domain} \
+                    -s {source_name} -j {job_name} -r {run_id}".format(cluster_ip=cluster_ip, cluster_user=cluster_user, \
+                        cluster_domain=cluster_domain, source_name=source.name, job_name=protection_job_name, \
+                             run_id=run.backup_run.job_run_id)), file=f)
 
   
 def main():
