@@ -65,6 +65,7 @@ def main():
     cohesity_client = CohesityUserAuthentication()
     cc = cohesity_client.user_auth()
     
+    
     #Cluster login artifact returns
     cluster_ip = cohesity_client.return_cluster_ip()
     cluster_user = cohesity_client.return_cluster_user()
