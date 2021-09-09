@@ -64,8 +64,11 @@ class ProtectedObjects(object):
         return job_list
                 
                             
-    def get_previous_run(self, cohesity_client, job_list):
-        pass
+    def get_previous_run(self, cohesity_client, job_id_list):
+        for job_id in job_id_list:
+            job_runs = cohesity_client.protection_runs.get_protection_runs(job_id=job_id)
+            print(job_runs.job_name, "//", job_runs.backup_run)
+            
 
   
 def main():
@@ -84,7 +87,8 @@ def main():
     
     #Files added to backup itteration
     backupfiles = protected_objects.get_files_latest_runs(cc, cluster_ip, cluster_user, cluster_domain, latest_run)
-    print(backupfiles)
+    
+    protected_objects.get_previous_run(cc, backupfiles)
 
 
 #run main function
