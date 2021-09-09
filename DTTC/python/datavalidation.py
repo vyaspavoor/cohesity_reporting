@@ -59,13 +59,17 @@ class ProtectedObjects(object):
                         cluster_domain=cluster_domain, source_name=source.name, job_name=protection_job_name, \
                              run_id=run.backup_run.job_run_id)), file=f)
 
+    def get_previous_jobs(self):
+        pass
+
+
   
 def main():
     #User Authentication
     cohesity_client = CohesityUserAuthentication()
     cc = cohesity_client.user_auth()
     
-    
+
     #Cluster login artifact returns
     cluster_ip = cohesity_client.return_cluster_ip()
     cluster_user = cohesity_client.return_cluster_user()
