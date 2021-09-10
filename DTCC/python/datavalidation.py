@@ -44,10 +44,10 @@ class ProtectedObjects(object):
                 runs.append(run)
         return runs
     #Execute python script to get the files based upon the list of jobs that have run in the last hour
-    def get_files_latest_runs(self, cohesity_client, cluster_ip, cluster_user, cluster_domain, protection_run_list, run_name):
+    def get_backed_up_file_list(self, cohesity_client, cluster_ip, cluster_user, cluster_domain, protection_run_list, run_name):
         self.protection_jobs = cohesity_client.protection_jobs
         self.protection_sources = cohesity_client.protection_sources
-        f = open(run_name+ str(datetime.datetime.now()), "a")
+        f = open("test_" + str(datetime.datetime.now()), "a")
         #with open("backupfilelog_"+ str(datetime.datetime.now()), "w") as f:
         job_list = []
         for job in protection_run_list:
@@ -66,14 +66,20 @@ class ProtectedObjects(object):
                             
     def get_previous_run(self, cohesity_client, job_id_list):
         run_times =[]
+        job_ids =[]
+        job_runs =[]
         for job_id in job_id_list:
-            job_runs = cohesity_client.protection_runs.get_protection_runs(job_id=job_id)
-            for run in job_runs:
-                run_times.append(run.backup_run.stats.start_time_usecs)  
-            # return cohesity_client.protection_runs.get_protection_runs(job_id=job_id, start_time_usecs=run_times[1])
+            job_runs.append(cohesity_client.protection_runs.get_protection_runs(job_id=job_id))
         
-            print(cohesity_client.protection_runs.get_protection_runs(job_id=job_id, start_time_usecs=run_times[1])) 
-        print(run_times)
+        for run in job_runs:
+            for obj in run:
+                #print(dir(obj))
+                run_times.append(obj.backup_run.stats.start_time_usecs)
+                job_ids.append(obj.job_id)
+        #print(job_ids) 
+        #return cohesity_client.protection_runs.get_protection_runs(job_id=job_ids[1], start_time_usecs=run_times[1])
+        
+       
     
             
 
@@ -93,9 +99,11 @@ def main():
     latest_run = protected_objects.protection_start_time(cc)
     
     #Files added to backup itteration
-    backupfiles = protected_objects.get_files_latest_runs(cc, cluster_ip, cluster_user, cluster_domain, latest_run, "backup")
+    backupfiles = protected_objects.get_backed_up_file_list(cc, cluster_ip, cluster_user, cluster_domain, latest_run, "backup")
     
     previous_run = protected_objects.get_previous_run(cc, backupfiles)
+
+    previous_backup_files = protected_objects.get_backed_up_file_list(cc, cluster_ip, cluster_user, cluster_domain, previous_run, "previous_backup")
 
 
 #run main function
