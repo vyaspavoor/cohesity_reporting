@@ -47,7 +47,7 @@ class ProtectedObjects(object):
     def get_backed_up_file_list(self, cohesity_client, cluster_ip, cluster_user, cluster_domain, protection_run_list, run_name):
         self.protection_jobs = cohesity_client.protection_jobs
         self.protection_sources = cohesity_client.protection_sources
-        f = open("test_" + str(datetime.datetime.now()), "a")
+        f = open(run_name + '-' + str(datetime.datetime.now()), 'w')
         #with open("backupfilelog_"+ str(datetime.datetime.now()), "w") as f:
         job_list = []
         for job in protection_run_list:
@@ -61,6 +61,7 @@ class ProtectedObjects(object):
                         cluster_domain=cluster_domain, source_name=source.name, job_name=protection_job_name, \
                              run_id=job.backup_run.job_run_id)), file=f)
                 job_list.append(job.job_id)
+            f.close()
         return job_list
                 
                             
@@ -77,7 +78,7 @@ class ProtectedObjects(object):
                 run_times.append(obj.backup_run.stats.start_time_usecs)
                 job_ids.append(obj.job_id)
         #print(job_ids) 
-        #return cohesity_client.protection_runs.get_protection_runs(job_id=job_ids[1], start_time_usecs=run_times[1])
+        return cohesity_client.protection_runs.get_protection_runs(job_id=job_ids[1], start_time_usecs=run_times[1])
         
        
     
