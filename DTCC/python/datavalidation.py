@@ -65,9 +65,14 @@ class ProtectedObjects(object):
                 
                             
     def get_previous_run(self, cohesity_client, job_id_list):
+        run_times =[]
         for job_id in job_id_list:
             job_runs = cohesity_client.protection_runs.get_protection_runs(job_id=job_id)
-            print(job_runs.job_name, "//", job_runs.backup_run)
+        for run in job_runs:
+            run_times.append(run.backup_run.stats.start_time_usecs)
+            
+        return cohesity_client.protection_runs.get_protection_runs(job_id=job_id, start_time_usecs=run_times[1])
+        
             
 
   
