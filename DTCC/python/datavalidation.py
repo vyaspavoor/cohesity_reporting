@@ -56,10 +56,10 @@ class ProtectedObjects(object):
             source_id = protection_job_obj.source_ids
             for id in source_id:
                 source = cohesity_client.protection_sources.get_protection_sources_object_by_id(id)
-                print(os.system("./backedUpFileList.py -v {cluster_ip} -u {cluster_user} -d {cluster_domain} \
+                os.system("./backedUpFileList.py -v {cluster_ip} -u {cluster_user} -d {cluster_domain} \
                     -s {source_name} -j {job_name} -r {run_id}".format(cluster_ip=cluster_ip, cluster_user=cluster_user, \
                         cluster_domain=cluster_domain, source_name=source.name, job_name=protection_job_name, \
-                             run_id=job.backup_run.job_run_id)), file=f)
+                             run_id=job.backup_run.job_run_id))
                 job_list.append(job.job_id)
             f.close()
         return job_list
@@ -69,16 +69,18 @@ class ProtectedObjects(object):
         run_times =[]
         job_ids =[]
         job_runs =[]
-        for job_id in job_id_list:
-            job_runs.append(cohesity_client.protection_runs.get_protection_runs(job_id=job_id))
-        
-        for run in job_runs:
-            for obj in run:
-                #print(dir(obj))
-                run_times.append(obj.backup_run.stats.start_time_usecs)
-                job_ids.append(obj.job_id)
-        #print(job_ids) 
-        return cohesity_client.protection_runs.get_protection_runs(job_id=job_ids[1], start_time_usecs=run_times[1])
+        if len(job_id_list) > 0:
+            for job_id in job_id_list:
+                job_runs.append(cohesity_client.protection_runs.get_protection_runs(job_id=job_id))
+            for run in job_runs:
+                for obj in run:
+                    #print(dir(obj))
+                    run_times.append(obj.backup_run.stats.start_time_usecs)
+                    job_ids.append(obj.job_id)
+            return cohesity_client.protection_runs.get_protection_runs(job_id=job_ids[1], start_time_usecs=run_times[1])
+        else:
+            print("No backup Jobs")
+
         
        
     
