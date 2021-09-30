@@ -1,0 +1,1 @@
+gci -re  *.*  |% { Protect-File -KeyAsPlainText $key $_ }
