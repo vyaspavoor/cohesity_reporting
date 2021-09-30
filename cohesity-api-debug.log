@@ -1,0 +1,13 @@
+07/28/2021 17:42:12: Prompting for Password
+07/28/2021 17:42:37: Name or service not known
+07/28/2021 17:56:02: Prompting for Password
+07/28/2021 18:06:26: Prompting for Password
+07/28/2021 18:10:09: {"errorCode":"KValidationError","message":"View having the name: 'tomtest1' already exists"}
+
+07/28/2021 18:24:07: {"errorCode":"KValidationError","message":"View having the name: 'savagetest' already exists"}
+
+07/29/2021 16:31:22: Name or service not known
+07/29/2021 16:32:34: Prompting for Password
+07/29/2021 16:32:49: Prompting for Password
+07/29/2021 16:32:52: {"errorCode":"KValidationError","message":"View having the name: 'savagetest' already exists"}
+
