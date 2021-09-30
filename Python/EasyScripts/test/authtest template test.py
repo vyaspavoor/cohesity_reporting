@@ -157,15 +157,16 @@ def main():
     for item in protect_object_2:
         if item.environment == "kVMware" :
             protection_job_body.name = '{protection_job} Protection Job'.format(protection_job = item.name)
-            print(protection_job_body.name)
+            print("{job} is a VMware protection job".format(job=protection_job_body.name))
         else:
-            print("This is not VMWare")
+            print("{job} is a {envi} job".format(job=protection_job_body.name, envi=item.environment))
+            
 
     #Loop through the protection source and query for the name and environment
     protect_source_2 = cohesity_client.protection_sources.list_protection_sources()
     #print(dir(protect_source_2))
     for item in protect_source_2:
-        print(dir(item))
+        #print(dir(item))
         if item.protection_source.environment == env_enum[0]:
             print("{name} is of the {envio} type.".format(name = item.protection_source.name, envio = item.protection_source.environment))
         #print(dir(item.unprotected_sources_summary))
@@ -194,7 +195,7 @@ def main():
 
     print(" \n \n Protection Environment Sources",)
     #print(dir(list_env_protection_source))
-    print(dir(envsrc))
+    print((envsrc))
     #vm_envi = [envapp.K_VMWARE]
     #vm_source = EnvProtectionSourceList()
     # print(vm_env)
