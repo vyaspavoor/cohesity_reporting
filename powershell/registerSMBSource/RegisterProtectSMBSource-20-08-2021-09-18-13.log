@@ -1,0 +1,84 @@
+Registered \\10.26.1.78\admin\Applications Successfully
+Registered \\10.26.1.78\admin\Claims Successfully
+Registered \\10.26.1.78\DW Successfully
+Registered \\10.26.1.78\EA Successfully
+Registered \\10.26.1.78\admin\Finance Successfully
+Registered \\10.26.1.78\Governanace Successfully
+Registered \\10.26.1.78\admin\IntOps Successfully
+Registered \\10.26.1.78\IT Successfully
+Registered \\10.26.1.78\admin\Phoenix Successfully
+Registered \\10.26.1.78\admin\Public Successfully
+Registered \\10.26.1.78\Risk-Compliance Successfully
+Registered \\10.26.1.78\Security-Guards Successfully
+Registered \\10.26.1.78\admin\Underwriting Successfully
+Registered \\10.26.1.78\users Successfully
+
+Id     Name                          Environment LastRunTime SLA  IsPaused
+--     ----                          ----------- ----------- ---  --------
+429547 10.26.1.78-admin-Applications kGenericNas             Pass False
+
+
+Id     Name                    Environment LastRunTime SLA  IsPaused
+--     ----                    ----------- ----------- ---  --------
+429548 10.26.1.78-admin-Claims kGenericNas             Pass False
+
+
+Id     Name          Environment LastRunTime SLA  IsPaused
+--     ----          ----------- ----------- ---  --------
+429552 10.26.1.78-DW kGenericNas             Pass False
+
+
+Id     Name          Environment LastRunTime SLA  IsPaused
+--     ----          ----------- ----------- ---  --------
+429553 10.26.1.78-EA kGenericNas             Pass False
+
+
+Id     Name                     Environment LastRunTime SLA  IsPaused
+--     ----                     ----------- ----------- ---  --------
+429554 10.26.1.78-admin-Finance kGenericNas             Pass False
+
+
+Id     Name                   Environment LastRunTime SLA  IsPaused
+--     ----                   ----------- ----------- ---  --------
+429555 10.26.1.78-Governanace kGenericNas             Pass False
+
+
+Id     Name                    Environment LastRunTime SLA  IsPaused
+--     ----                    ----------- ----------- ---  --------
+429556 10.26.1.78-admin-IntOps kGenericNas             Pass False
+
+
+Id     Name          Environment LastRunTime SLA  IsPaused
+--     ----          ----------- ----------- ---  --------
+429557 10.26.1.78-IT kGenericNas             Pass False
+
+
+Id     Name                     Environment LastRunTime SLA  IsPaused
+--     ----                     ----------- ----------- ---  --------
+429558 10.26.1.78-admin-Phoenix kGenericNas             Pass False
+
+
+Id     Name                    Environment LastRunTime SLA  IsPaused
+--     ----                    ----------- ----------- ---  --------
+429559 10.26.1.78-admin-Public kGenericNas             Pass False
+
+
+Id     Name                       Environment LastRunTime SLA  IsPaused
+--     ----                       ----------- ----------- ---  --------
+429560 10.26.1.78-Risk-Compliance kGenericNas             Pass False
+
+
+Id     Name                       Environment LastRunTime SLA  IsPaused
+--     ----                       ----------- ----------- ---  --------
+429561 10.26.1.78-Security-Guards kGenericNas             Pass False
+
+
+Id     Name                          Environment LastRunTime SLA  IsPaused
+--     ----                          ----------- ----------- ---  --------
+429562 10.26.1.78-admin-Underwriting kGenericNas             Pass False
+
+
+Id     Name             Environment LastRunTime SLA  IsPaused
+--     ----             ----------- ----------- ---  --------
+429563 10.26.1.78-users kGenericNas             Pass False
+
