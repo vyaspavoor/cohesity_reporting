@@ -25,7 +25,6 @@ try{
           $NASHostName = $_.Hostname
             $NASPath = $_.Name
             $NasName = $NasHostName + '\' + $NASPath
-            $Path = '\\'+ $NasName
             $JobName = $NasName.replace('\', '-') 
             try{Stop-CohesityProtectionJob -Name $JobName -Confirm:$false | Tee-Object -file $LogFile -Append}
             catch{Write-warning $_.exception.message}
