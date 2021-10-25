@@ -1,6 +1,9 @@
 from cohesity_management_sdk.cohesity_client import CohesityClient
 from cohesity_management_sdk.exceptions.api_exception import APIException as api_exc
-from cohesity_management_sdk.models.restore_files_task_request import RestoreFilesTaskRequest as body
+from cohesity_management_sdk.models.restore_files_task_request import RestoreFilesTaskRequest as restore_body
+#rom cohesity_management_sdk.models.restored_file_info_list import RestoredFilesInfoList as recovered_file_info_list 
+
+from cohesity_management_sdk.models.restored_file_info_list import RestoredFileInfoList as rere
 import datetime
 import getpass
 import os
@@ -80,38 +83,73 @@ class ProtectedObjects(object):
         #return type(self.protected_group)
         
     def get_protected_runs(self, job_id):
+        
         self.protected_run = self.protection_runs.get_protection_runs(job_id)
-        return self.protected_run[0].backup_run.stats.start_time_usecs
+        run_dict = {"start_time": self.protected_run[0].backup_run.stats.start_time_usecs,
+                    "run_id":self.protected_run[0].backup_run.job_run_id }
+        return run_dict
+        
+    
+    
             
         #return dir(self.protected_run)
     
 class ObjectsToRestore(object):
     def __init__(self, cohesity_client, search_text):
         self.restore_tasks = cohesity_client.restore_tasks
+        
+        #self.restore_taskss = cohesity_client.restore_tasks
         self.restore_search = self.restore_tasks.search_restored_files(search=search_text.casefold())
+        #self.restore_body = self.restore_tasks.RestoreFilesTaskRequest()
+        self.recovery_task_body = restore_body
+        
     
     def recovery_file_search(self):
         for item in self.restore_search.files:
             return(item.job_id)
                
     def recover_file(self, job_id, job_run_id, run_start_time, cluster_id, incaarnation_id, source_id, target_id, environment):
-        recovery_task_body = body
-        body.name = "Recovery_Task_test"
-        body.sourceObjectInfo = {
-        "environment": "kPhysical",
-        "jobId" : 31,
-        "jobRunId": 2148,
+        
+        
+        self.recovery_task_body.continue_on_error = True
+        self.recovery_task_body.filenames = ["Vault1.txt"]
+        self.recovery_task_body.filter_ip_config = False
+        self.recovery_task_body.file_recovery_method = "kUseExistingAgent"
+        self.recovery_task_body.is_file_based_volume_restore = True
+        self.recovery_task_body.mount_disks_on_vm = False
+        self.recovery_task_body.name = "Recovery_Task_test"
+        self.recovery_task_body.new_base_directory = "/tmp/greg"
+        self.recovery_task_body.overwrite = False
+        # self.recovery_task_body.restored_file_info_list = []
+        # self.recovery_task_body.restored_file_info_list.append(rere())
+        # self.recovery_task_body.restored_file_info_list[0].is_directory = True
+        self.recovery_task_body.restored_file_info_list = [{"isDirectory": True}]
+        self.recovery_task_body.password = "Cohe$1ty"
+        self.recovery_task_body.preserve_attributes = True
+        self.recovery_task_body.source_object_info = {                                                             
+        "environment": environment,
+        "jobId": job_id,
+        "jobRunId": job_run_id,
         "jobUid": {
-            "clusterId": 1089765256393000,
-            "clusterIncarnationId": 1633708596754,
-            "id": 31
+            "clusterId": cluster_id,
+            "clusterIncarnationId": incaarnation_id,
+            "id": job_id
+            },
+        "protectionSourceId": source_id,
+        "startedTimeUsecs": run_start_time
         },
-        "protectionSourceId": 7,
-        "startedTimeUsecs": 1634235153603583
-    }
+        self.recovery_task_body.target_host_type = "kLinux"
+        self.recovery_task_body.target_parent_source_id = 2,
+        self.recovery_task_body.target_source_id = target_id,
+        self.recovery_task_body.use_existing_agent = True,
+        self.recovery_task_body.username = "cohesity"
+        
+        
+        result = self.restore_tasks.create_restore_files_task(self.recovery_task_body)
+        
+        #self.create_restore_files_task(self.recovery_task_body)
         
 
-        #result = restore_tasks_controller.create_restore_files_task(body)
     
 
 def main():
@@ -120,7 +158,7 @@ def main():
     cc = cohesity_client.user_auth()
     
     
-    object_to_restore = ObjectsToRestore(cc, "vault4.txt")
+    object_to_restore = ObjectsToRestore(cc, "vault1.txt")
     obj_restore = object_to_restore.recovery_file_search()
     
     cluster_config = ClusterConfig(cc)
@@ -128,15 +166,21 @@ def main():
     cluster_incarnation_id = cluster_config.get_cluster_incarnation_id()
     
     
-    source_protected_source = ProtectedSources(cc, "10.26.1.87")
+    source_protected_source = ProtectedSources(cc, "10.26.0.81")
     source_id = source_protected_source.list_protected_source()
-    target_protected_source = ProtectedSources(cc, "10.26.1.149")
+    target_protected_source = ProtectedSources(cc, "10.26.0.49")
+    target_id = target_protected_source.list_protected_source()
     
     
-    protected_group = ProtectedObjects(cc, "murph-ransomware-test")
+    protected_group = ProtectedObjects(cc, "dtcc_test")
     protect_obj = protected_group.get_protected_jobs()
     run_obj = protected_group.get_protected_runs(protect_obj)
     
+    
+    run_id = run_obj['run_id']
+    start_time = run_obj['start_time']
+    print(source_id)
+    recovery_obj = object_to_restore.recover_file(protect_obj, run_id , start_time, cluster_id, cluster_incarnation_id, source_id, target_id, "kPhysical") 
     
     #print(dir(exc))
 if __name__ == '__main__':
