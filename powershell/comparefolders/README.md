@@ -6,7 +6,7 @@ This script is provided on a best effort basis.  It is expected that you have a 
 
 ```powershell
 #Download Files
-$scriptName = '$compareFiles'
-$repo = 'https://raw.githubusercontent.com/greysave/cohesity/tree/main/powershell'
+$scriptName = 'compareFolders'
+$repo = 'https://raw.githubusercontent.com/greysave/cohesity/main/powershell'
 (Invoke-WebRequest -Uri "$repo/$scriptName/$scriptName.ps1").content | Out-File "$scriptName.ps1";  (Get-Content "scriptName.ps1"| Set-Content "$scriptName.ps1"
 ```
