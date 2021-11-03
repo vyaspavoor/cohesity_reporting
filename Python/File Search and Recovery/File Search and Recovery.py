@@ -180,7 +180,7 @@ class ObjectsToRestore(object):
         }
         # print(file_name)
         req = requests.post(url=url, data=json.dumps(payload), headers=headers, verify=False)
-        print("The protectio_group {job_name} has been recovered".format(job_name=job_name))
+        print("The protection_group {job_name} has been recovered".format(job_name=job_name))
         
 
     
