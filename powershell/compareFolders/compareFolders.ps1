@@ -5,7 +5,7 @@ param (
     [Parameter(Mandatory=$True, HelpMessage = "Please enter the source directory")]
     [String]
     $source, 
-    [Parameter(Mandatory=$True, HelpMessage = "Please enter the cluster Port")]
+    [Parameter(Mandatory=$True, HelpMessage = "Please enter the target directory")]
     [String]
     $target
 )
