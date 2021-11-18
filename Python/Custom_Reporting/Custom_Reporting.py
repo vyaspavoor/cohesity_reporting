@@ -1,5 +1,8 @@
 from cohesity_management_sdk.cohesity_client import CohesityClient
-from cohesity_management_sdk.models.access_token_credential import AccessTokenCredential 
+from cohesity_management_sdk.models.access_token_credential import AccessTokenCredential
+from cohesity_management_sdk.exceptions.request_error_error_exception import RequestErrorErrorException
+from cohesity_management_sdk.exceptions.api_exception import APIException
+
 
 class CohesityUserAuthentication(object):
         
@@ -54,8 +57,12 @@ class CohesityProtectionJobObject(object):
         self.protection_jobs = cohesity_client.protection_jobs
         self.protection_job_objects = self.protection_jobs.get_protection_jobs()
         
-        #Create policy object
+        #Create policy variables and objects
         self.protection_policies = cohesity_client.protection_policies
+        
+        
+        #Create source object
+        self.protection_sources = cohesity_client.protection_sources
         
         #Declare empty dictionary
         self.job_dict = {}
@@ -67,11 +74,12 @@ class CohesityProtectionJobObject(object):
     
     def create_job_dictionary(self):
         for job in self.protection_job_objects:
-            self.job_dict[job.name] = {}
-            self.job_dict[job.name]["Job Id"] = job.id
-            self.job_dict[job.name]["Source Id"] = job.source_ids
-            self.job_dict[job.name]["Policy Id"] = job.policy_id
-            self.job_dict[job.name]["Description"] = job.description
+            if '_deleted_'.upper() not in job.name:
+                self.job_dict[job.name] = {}
+                self.job_dict[job.name]["Job Id"] = job.id
+                self.job_dict[job.name]["Source Id"] = job.source_ids
+                self.job_dict[job.name]["Policy Id"] = job.policy_id
+                self.job_dict[job.name]["Description"] = job.description
         return self.job_dict
     
     def create_job_name_list(self, job_dictionary):
@@ -82,46 +90,39 @@ class CohesityProtectionJobObject(object):
 
     def append_policy_name_dictionary(self, appended_job_dict, job_name_list):
         count = 0
-        self.protection_policy_objects = self.protection_policies.get_protection_policies()
+        #self.protection_policy_objects = self.protection_policies.get_protection_policies()
         self.appended_job_dict = appended_job_dict
-        for job in self.appended_job_dict:
-             
+        
+        for name in job_name_list:
+    
+            try:
+                protection_policy_objects = self.protection_policies.get_protection_policy_by_id(id = self.job_dict[name]["Policy Id"])
+            except RequestErrorErrorException as e: 
+                continue
+            except APIException as e:
+                continue    
+            self.appended_job_dict[name]["Policy Name"] = protection_policy_objects.name
+            return self.appended_job_dict
+   
             
-            for name in job_name_list:
-               
-               #print(self.appended_job_dict[name])
-                policy_ids = []
-                #policy_ids.append(self.job_dict[name]["Policy Id"])
-                #policy_ids.append()
-                
-        
-        
-                 
-                for item in self.protection_policy_objects:
-                    self.protection_policy_objects = self.protection_policies.get_protection_policies()
-                    if item.id == self.job_dict[name]["Policy Id"]:
-                        print(item.name)
-                        #print(item.name)
-                        #count += 1
-                    # else:
-                    #     print(item.name)
-                    #     count += 1
-                        
-        print(count)
-                    #     print("Policy Deleted")
-                            # print(type(item))
-                    # if (type(item) is  "NoneType"):
-                    #     print("Policy deleted")
-                    #     item = 0
-                    #     item.name = "policy deleted"
-                    # #     print(item.name)
-                    #     print(item)
-                
 
-def append_source_name_dictionary(self, appended_job_dict, job_name_list):
-    self.appended_job_dict = appended_job_dict
-    
-    
+    def append_source_name_dictionary(self, appended_job_dict, job_names_list):
+        self.appended_job_dict = appended_job_dict
+        for name in job_names_list:
+            #Create name list for use later
+            source_names = []
+            #Itterate through the List nested in the dictionary
+            for id in self.appended_job_dict[name]["Source Id"]:
+                try:
+                    source = self.protection_sources.list_protection_sources(id=id)
+                except RequestErrorErrorException as e: 
+                    continue
+                except APIException as e:
+                    continue
+                source_names.append(source[0].protection_source.name)
+            self.appended_job_dict[name]["Source Name"] = source_names
+        return self.appended_job_dict
+                #print(dir(source[0]))
 def main():
     #SDK Authenticaation to the cluster
     cohesity_client = CohesityUserAuthentication()
@@ -132,8 +133,10 @@ def main():
     protection_job_object = CohesityProtectionJobObject(cohesity_client = cc)
     protection_job_dictionary = protection_job_object.create_job_dictionary()
     cohesity_protection_jobs_names = protection_job_object.create_job_name_list(protection_job_dictionary)
-    #cohesity_protection_policy_names = protection_job_object.append_policy_name_dictionary(protection_job_dictionary, cohesity_protection_jobs_names)
+    cohesity_protection_policy_names = protection_job_object.append_policy_name_dictionary(protection_job_dictionary, cohesity_protection_jobs_names)
+    cohesity_protection_source_names = protection_job_object.append_source_name_dictionary(protection_job_dictionary, cohesity_protection_policy_names)
     #prcohesity_protection_policy_names)
+    print(cohesity_protection_source_names)
     
     
     
