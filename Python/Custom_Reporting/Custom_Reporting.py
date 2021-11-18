@@ -118,6 +118,8 @@ class CohesityProtectionJobObject(object):
                     #     print(item)
                 
 
+def append_source_name_dictionary(self, appended_job_dict, job_name_list):
+    self.appended_job_dict = appended_job_dict
     
     
 def main():
