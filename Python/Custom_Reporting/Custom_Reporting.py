@@ -5,8 +5,7 @@ from cohesity_management_sdk.exceptions.api_exception import APIException
 import datetime
 import pandas as pd
 import csv
-import itertools
-import sys
+import getpass
 
 class CohesityUserAuthentication(object):
         
@@ -14,15 +13,10 @@ class CohesityUserAuthentication(object):
     def __init__(self, **kwargs):
         self.cohesity_client = kwargs.get('cohesity_client', CohesityUserAuthentication)
         #Intializing input authentication variables
-        # self.cluster_ip = getpass._raw_input("Please enter the cluster VIP:  ")
-        # self.username = getpass._raw_input("Please Enter the username:  ")
-        # self.password = getpass.getpass(prompt="Please enter the user password: ", stream=None)
-        # self.domain = getpass._raw_input("Please Enter the user domain:  ")
-        
-        self.cluster_url = "10.26.0.159"
-        self.username = "gsavage"
-        self.password = "GPassword2021"
-        self.domain = "local"
+        self.cluster_ip = getpass._raw_input("Please enter the cluster VIP:  ")
+        self.username = getpass._raw_input("Please Enter the username:  ")
+        self.password = getpass.getpass(prompt="Please enter the user password: ", stream=None)
+        self.domain = getpass._raw_input("Please Enter the user domain:  ")
         
         #Bearer Token Setup
         self.body = AccessTokenCredential()
