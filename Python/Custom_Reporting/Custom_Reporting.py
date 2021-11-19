@@ -13,7 +13,7 @@ class CohesityUserAuthentication(object):
     def __init__(self, **kwargs):
         self.cohesity_client = kwargs.get('cohesity_client', CohesityUserAuthentication)
         #Intializing input authentication variables
-        self.cluster_ip = getpass._raw_input("Please enter the cluster VIP:  ")
+        self.cluster_url = getpass._raw_input("Please enter the cluster VIP:  ")
         self.username = getpass._raw_input("Please Enter the username:  ")
         self.password = getpass.getpass(prompt="Please enter the user password: ", stream=None)
         self.domain = getpass._raw_input("Please Enter the user domain:  ")
@@ -47,8 +47,6 @@ class CohesityUserAuthentication(object):
         return self.username
     def get_cluster_domain(self):
         return self.domain
-    
-    
 
 class CohesityProtectionJobObject(object):
     
@@ -83,18 +81,17 @@ class CohesityProtectionJobObject(object):
         except APIException as e:
             print("There was a problem with the API request")
         
+        #Setup report naming
         self.cluster_name = self.cluster.name
         self.cluster_time = datetime.datetime.fromtimestamp(self.cluster.current_time_msecs/10**3).strftime('%H%M%S_%m%d%Y')
-        #print(self.cluster_time)
         self.report_name = self.cluster_name + '_' + self.cluster_time +'_Backuperport.csv'
+        
         #Declare empty dictionary
         self.job_dict = {}
         
         #Declare job_name list
         self.job_names = []
         
-        
-    
     def create_job_dictionary(self):
         for job in self.protection_job_objects:
             if '_deleted_'.upper() not in job.name:
@@ -104,8 +101,7 @@ class CohesityProtectionJobObject(object):
                 self.job_dict[job.name]["Source Id"] = job.source_ids
                 self.job_dict[job.name]["Policy Id"] = job.policy_id
                 self.job_dict[job.name]["Environment"] = job.environment
-                self.job_dict[job.name]["Description"] = job.description
-                
+                self.job_dict[job.name]["Description"] = job.description         
         return self.job_dict
     
     def create_job_name_list(self, job_dictionary):
@@ -115,39 +111,34 @@ class CohesityProtectionJobObject(object):
         
     def append_policy_name_dictionary(self, appended_job_dict, job_name_list):
         count = 0
-        #self.protection_policy_objects = self.protection_policies.get_protection_policies()
+        #iterate through policy object and set attributes
         self.appended_job_dict = appended_job_dict
         for name in job_name_list:
             if  self.protection_policies.get_protection_policies != None:
                 try:
                     protection_policy_objects = self.protection_policies.get_protection_policy_by_id(id = self.job_dict[name]["Policy Id"])
-                     
                 except RequestErrorErrorException as e: 
                     continue
                 except APIException as e:
-                    continue    
+                    continue
+                #Obtain Policy information    
                 self.appended_job_dict[name]["Policy Name"] = protection_policy_objects.name
                 self.appended_job_dict[name]["Days to Keep"] = protection_policy_objects.days_to_keep
-                
                 if protection_policy_objects.extended_retention_policies != None:
                     self.appended_job_dict[name]["Extended Retention"] =  protection_policy_objects.extended_retention_policies[0].days_to_keep
                 else:
                    self.appended_job_dict[name]["Extended Retention"] = "No extended retention"
-                
             else:
                self.appended_job_dict[name]["Policy Name"] = "Policy Deleted"
-               self.appended_job_dict[name]["Days to Keep"] = "Retention not found"
-               
+               self.appended_job_dict[name]["Days to Keep"] = "Retention not found"         
         return self.appended_job_dict
    
-            
-
     def append_source_name_dictionary(self, appended_job_dict, job_names_list):
         self.appended_job_dict = appended_job_dict
         for name in job_names_list:
             #Create name list for use later
             source_names = []
-            #Itterate through the List nested in the dictionary
+            #Iterate through the List nested in the dictionary
             for id in self.appended_job_dict[name]["Source Id"]:
                 try:
                     source = self.protection_sources.list_protection_sources(id=id)
@@ -158,8 +149,7 @@ class CohesityProtectionJobObject(object):
                 source_names.append(source[0].protection_source.name)
             self.appended_job_dict[name]["Source Name"] = source_names
         return self.appended_job_dict
-                
-                
+                       
     def append_latest_protection_run_dictionary(self, appended_job_dict, job_names_list):
         self.appended_job_dict = appended_job_dict
         
@@ -171,7 +161,7 @@ class CohesityProtectionJobObject(object):
                 continue
             except APIException as e:
                 continue
-            
+            #iterate through jobs and set attributes
             for job in job_runs:
                 if self.appended_job_dict[name]["Job Id"] == job.job_id:
                     runs.append(job) 
@@ -180,49 +170,42 @@ class CohesityProtectionJobObject(object):
                     self.appended_job_dict[name]["Job End Time"] = datetime.datetime.fromtimestamp(runs[0].backup_run.stats.end_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
                     self.appended_job_dict[name]["Total Bytes Read"] = runs[0].backup_run.stats.total_bytes_read_from_source
                     self.appended_job_dict[name]["Total Logical Backup Size"] = runs[0].backup_run.stats.total_logical_backup_size_bytes
+                    if runs[0].copy_run[0].target.replication_target != None:
+                        self.appended_job_dict[name]["Replication Target"] = runs[0].copy_run[0].target.replication_target.cluster_name
+                    else:
+                        self.appended_job_dict[name]["Replication Target"] = "No Replicatoin Cluster"
+                    self.appended_job_dict[name]["Latest Backup Run Status"] = runs[0].backup_run.status
                     
-                if runs[0].copy_run[0].target.replication_target != None:
-                    self.appended_job_dict[name]["Replication Target"] = runs[0].copy_run[0].target.replication_target.cluster_name
-                    print(self.appended_job_dict[name]["Replication Target"])
-                else:
-                    self.appended_job_dict[name]["Replication Target"] = "No Replicatoin Cluster"
-                self.appended_job_dict[name]["Latest Backup Run Status"] = runs[0].backup_run.status
-                
-                if len(runs) >= 2:
-                    self.appended_job_dict[name]["Previous Backup Status"] = runs[1].backup_run.status
-                else:
-                   self.appended_job_dict[name]["Previous Backup Status"] = "No Previous Run Found"       
-       
+                    if len(runs) >= 2:
+                        self.appended_job_dict[name]["Previous Backup Status"] = runs[1].backup_run.status
+                    else:
+                        self.appended_job_dict[name]["Previous Backup Status"] = "No Previous Run Found"       
         return self.appended_job_dict
                 
     def clean_appended_dict(self, appended_job_dict, job_names_list):
+        
         self.appended_job_dict = appended_job_dict
-    
+        #Iterate through dictionary and remove 
         for name in job_names_list:
             self.appended_job_dict[name].pop("Policy Id")
             self.appended_job_dict[name].pop("Source Id")
             self.appended_job_dict[name].pop("Job Id")
-    
         return self.appended_job_dict
     
     def save_as_csv(self, appended_job_dict, job_names_list):
-        #self.job_names_list = job_names_list
         self.appended_job_dict = appended_job_dict
-        
+        #Setup the dataframe for export to CSV
         df = pd.DataFrame(self.appended_job_dict).rename_axis('job name').reset_index().transpose()
-        #df = pd.T
+        #Iterate and add dictionaries as rows and columns
         for name in job_names_list:
             df = df.rename(columns=appended_job_dict[name])
-        
+        #export to csv
         df.to_csv(self.report_name, index=False)
-
-    
 
 def main():
     #SDK Authenticaation to the cluster
     cohesity_client = CohesityUserAuthentication()
     cc = cohesity_client.user_auth()
-    
     #Protection Job  Object
     protection_job_object = CohesityProtectionJobObject(cohesity_client = cc)
     #Protection Job Dictionary
@@ -239,9 +222,6 @@ def main():
     cohesity_cleaned_dictionary = protection_job_object.clean_appended_dict(cohesity_protection_run_info, cohesity_protection_jobs_names)
     #Create csv
     create_csv = protection_job_object.save_as_csv(cohesity_cleaned_dictionary, cohesity_protection_jobs_names)
-    
-    
-    
 if __name__ == '__main__':
     main()
         
