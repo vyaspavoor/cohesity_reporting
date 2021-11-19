@@ -84,7 +84,7 @@ class CohesityProtectionJobObject(object):
         #Setup report naming
         self.cluster_name = self.cluster.name
         self.cluster_time = datetime.datetime.fromtimestamp(self.cluster.current_time_msecs/10**3).strftime('%H%M%S_%m%d%Y')
-        self.report_name = self.cluster_name + '_' + self.cluster_time +'_Backuperport.csv'
+        self.report_name = self.cluster_name + '_' + self.cluster_time +'_Backupreport.csv'
         
         #Declare empty dictionary
         self.job_dict = {}
