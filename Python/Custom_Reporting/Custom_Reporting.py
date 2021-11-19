@@ -30,9 +30,9 @@ class CohesityUserAuthentication(object):
         try:
             return CohesityClient(self.cluster_url, self.username, self.password, self.domain)
         except RequestErrorErrorException as e: 
-            print("There was an excepiton with the JSON Payload")
+            print(e)
         except APIException as e:
-            print("There was a problem with the your credentials  Please try again", e)
+            print(e)
     
     def get_bearer_token(self):
         self.access_token = self.cohesity_client.access_tokens
@@ -59,9 +59,9 @@ class CohesityProtectionJobObject(object):
         try:
             self.protection_job_objects = self.protection_jobs.get_protection_jobs()
         except RequestErrorErrorException as e: 
-            print("There was a problem with the payload")
+            print(e)
         except APIException as e:
-            print("There was a problem with the API request")
+            print(e)
         
         #Create policy variables and objects
         self.protection_policies = cohesity_client.protection_policies
@@ -77,9 +77,9 @@ class CohesityProtectionJobObject(object):
         try:
             self.cluster = self.cohesity_cluster.get_cluster()
         except RequestErrorErrorException as e: 
-            print("There was a problem with the payload")
+            print(e)
         except APIException as e:
-            print("There was a problem with the API request")
+            print(e)
         
         #Setup report naming
         self.cluster_name = self.cluster.name
@@ -183,7 +183,6 @@ class CohesityProtectionJobObject(object):
         return self.appended_job_dict
                 
     def clean_appended_dict(self, appended_job_dict, job_names_list):
-        
         self.appended_job_dict = appended_job_dict
         #Iterate through dictionary and remove 
         for name in job_names_list:
