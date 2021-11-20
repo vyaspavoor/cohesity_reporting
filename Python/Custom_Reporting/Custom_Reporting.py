@@ -166,8 +166,14 @@ class CohesityProtectionJobObject(object):
                 if self.appended_job_dict[name]["Job Id"] == job.job_id:
                     runs.append(job) 
                     self.appended_job_dict[name]["Snapshot Deleted"] = runs[0].backup_run.snapshots_deleted
-                    self.appended_job_dict[name]["Job Start Time"] = datetime.datetime.fromtimestamp(runs[0].backup_run.stats.start_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
-                    self.appended_job_dict[name]["Job End Time"] = datetime.datetime.fromtimestamp(runs[0].backup_run.stats.end_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
+                    if  runs[0].backup_run.stats.start_time_usecs != None:
+                        self.appended_job_dict[name]["Job Start Time"] = datetime.datetime.fromtimestamp(runs[0].backup_run.stats.start_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
+                    else:
+                       self.appended_job_dict[name]["Job Start Time"] = "Job not Started"
+                    if runs[0].backup_run.stats.end_time_usecs != None:
+                        self.appended_job_dict[name]["Job End Time"] = datetime.datetime.fromtimestamp(runs[0].backup_run.stats.end_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
+                    else:
+                        self.appended_job_dict[name]["Job End Time"] = "Job not started" 
                     self.appended_job_dict[name]["Total Bytes Read"] = runs[0].backup_run.stats.total_bytes_read_from_source
                     self.appended_job_dict[name]["Total Logical Backup Size"] = runs[0].backup_run.stats.total_logical_backup_size_bytes
                     if runs[0].copy_run[0].target.replication_target != None:
@@ -198,8 +204,10 @@ class CohesityProtectionJobObject(object):
         #Iterate and add dictionaries as rows and columns
         for name in job_names_list:
             df = df.rename(columns=appended_job_dict[name])
+        df.drop('job name')
         #export to csv
         df.to_csv(self.report_name, index=False)
+        
 
 def main():
     #SDK Authenticaation to the cluster
