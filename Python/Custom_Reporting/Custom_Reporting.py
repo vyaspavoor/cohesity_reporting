@@ -204,9 +204,12 @@ class CohesityProtectionJobObject(object):
         #Iterate and add dictionaries as rows and columns
         for name in job_names_list:
             df = df.rename(columns=appended_job_dict[name])
-        df.drop('job name')
+        
         #export to csv
         df.to_csv(self.report_name, index=False)
+        #Skip index row and overwrite csv
+        dff =pd.read_csv(self.report_name, skiprows=1)
+        dff.to_csv(self.report_name, index=False)
         
 
 def main():
