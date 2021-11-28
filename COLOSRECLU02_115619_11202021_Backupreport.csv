@@ -1,0 +1,9 @@
+0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
+Job Name,Environment,Description,Source Name,Snapshot Deleted,Job Start Time,Job End Time,Total Bytes Read,Total Logical Backup Size,Replication Target,Latest Backup Run Status,Previous Backup Status,Policy Name,Days to Keep,Extended Retention
+gregtest2,kView,,[],True,07-08-2021 13:05:59,07-08-2021 13:06:04,0,0,No Replicatoin Cluster,kSuccess,No Previous Run Found,,,
+Windows_Protection_Group_File_Based,kPhysicalFiles,,[],True,10-01-2021 08:32:01,10-01-2021 08:35:45,494289277,11968239849,No Replicatoin Cluster,kWarning,kWarning,,,
+Windows_Block_Based,kPhysical,,[],True,10-06-2021 09:29:00,10-06-2021 09:53:54,0,0,No Replicatoin Cluster,kFailure,kFailure,,,
+NAS_PG,kGenericNas,,[],True,10-25-2021 09:22:00,10-25-2021 09:37:35,0,0,No Replicatoin Cluster,kFailure,kFailure,,,
+Replication-Test,kVMware,,[],False,11-20-2021 09:36:01,11-20-2021 09:51:12,0,0,No Replicatoin Cluster,kFailure,kFailure,Repl-Encryp-Policy,2,No extended retention
+VMDeactivate Test,kVMware,,['abhishek09test'],True,10-07-2021 08:52:22,10-07-2021 09:04:07,27808235520,1756641624064,No Replicatoin Cluster,kCanceled,No Previous Run Found,,,
+ARCH-TEST,kVMware,,['windows_2008_r2'],True,10-15-2021 07:52:10,10-15-2021 09:07:29,107374182400,107374182400,No Replicatoin Cluster,kSuccess,No Previous Run Found,,,

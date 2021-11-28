@@ -1,0 +1,74 @@
+0,1,2,3,4,5,6,7,8,9,10,11,12,13,14
+Job Name,Environment,Description,Policy Name,Days to Keep,Extended Retention,Source Name,Snapshot Deleted,Job Start Time,Job End Time,Total Bytes Read,Total Logical Backup Size,Replication Target,Latest Backup Run Status,Previous Backup Status
+Infrastructure LAB VMs - DO NOT TOUCH,kVMware,,Bronze,30,90,"['PassResetWIN8', 'ZABBIXPROD', 'sac01-sre-dc01', 'sac01-sre-dc02-sre.local', 'smartlabsaws_control_vm', 'smartlabsdev', 'smartlabsprod']",False,11-19-2021 10:15:57,11-19-2021 10:16:28,0,0,No Replicatoin Cluster,kCanceled,kSuccess
+PS_LAB-VMs DO NOT TOUCH,kVMware,,Bronze,30,90,"['psapilnx', 'psmidserver', 'psapiwin']",False,11-19-2021 00:08:00,11-19-2021 00:09:17,1499529216,268435456000,No Replicatoin Cluster,kSuccess,kSuccess
+Template_Store,kView,,COLO_NFS_DS_Daily,30,No extended retention,['Template_Store'],True,04-28-2021 10:47:31,04-28-2021 10:47:35,0,4359289187661,No Replicatoin Cluster,kSuccess,kSuccess
+gregtest,kView,,Bronze,30,90,['GregTest'],True,07-18-2021 13:17:01,07-18-2021 13:17:05,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+10.26.0.25-savagetest2,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.0.25\\savagetest2'],False,11-18-2021 11:25:01,11-18-2021 11:42:48,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.0.25-savagetest3,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.0.25\\savagetest3'],False,11-18-2021 11:25:01,11-18-2021 11:42:51,0,0,No Replicatoin Cluster,kFailure,kFailure
+TomsTest1,kView,,tompolicyrep,14,No extended retention,['tomtest1'],False,11-18-2021 18:26:00,11-18-2021 18:26:04,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+TomsTest2,kView,,tompolicyrep,14,No extended retention,['tomtest2'],False,11-18-2021 18:28:00,11-18-2021 18:28:04,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+VMreporting1,kVMware,,Bronze,30,90,[],False,08-02-2021 23:10:09,08-02-2021 23:35:25,107374182400,107374182400,No Replicatoin Cluster,kSuccess,No Previous Run Found
+VMreporting2,kVMware,,Bronze,30,90,[],False,08-02-2021 23:11:15,08-03-2021 00:02:12,107374182400,107374182400,No Replicatoin Cluster,kSuccess,No Previous Run Found
+jesstest,kView,,test,14,No extended retention,['jesstest2'],False,11-19-2021 10:31:00,11-19-2021 10:31:04,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+10.26.1.78-fccitest-01,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\fccitest-01'],False,11-18-2021 11:02:00,11-18-2021 11:19:45,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-fccitest-02,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\fccitest-02'],False,11-18-2021 11:02:00,11-18-2021 11:19:50,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-fccitest-03,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\fccitest-03'],False,11-18-2021 11:02:00,11-18-2021 11:19:45,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-fccitest-04,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\fccitest-04'],False,11-18-2021 11:02:00,11-18-2021 11:19:45,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-dtcctest,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\dtcctest'],False,11-18-2021 16:56:00,11-18-2021 17:13:45,0,0,No Replicatoin Cluster,kFailure,kFailure
+fccitest-02,kView,,Savage_replicate,14,No extended retention,['fccitest-02'],False,11-19-2021 10:15:36,11-19-2021 10:15:40,0,0,AshishCluster,kSuccess,kSuccess
+fccitest-03,kView,,Savage_replicate,14,No extended retention,['fccitest-03'],False,11-19-2021 09:10:02,11-19-2021 09:10:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+fccitest-04,kView,,Savage_replicate,14,No extended retention,['fccitest-04'],False,11-19-2021 09:10:02,11-19-2021 09:10:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+10.26.1.78-share,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\share'],False,11-18-2021 18:31:01,11-18-2021 18:48:49,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IR2014PRD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IR2014PRD'],False,11-18-2021 18:31:01,11-18-2021 18:48:49,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IR2015PRD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IR2015PRD'],False,11-18-2021 18:31:01,11-18-2021 18:48:51,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IR2016PRD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IR2016PRD'],False,11-18-2021 18:31:01,11-18-2021 18:48:45,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IR2017PRD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IR2017PRD'],False,11-18-2021 18:31:01,11-18-2021 18:48:51,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IR2018PRD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IR2018PRD'],False,11-18-2021 18:32:02,11-18-2021 18:49:52,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IR2019PRD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IR2019PRD'],False,11-18-2021 18:32:02,11-18-2021 18:49:44,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IR2020PRD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IR2020PRD'],False,11-18-2021 18:32:02,11-18-2021 18:49:48,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IR2021PRD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IR2021PRD'],False,11-18-2021 18:32:02,11-18-2021 18:49:54,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-EIPIR,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\EIPIR'],False,11-18-2021 18:32:02,11-18-2021 18:49:50,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-EIPPROD,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\EIPPROD'],False,11-18-2021 18:32:02,11-18-2021 18:49:46,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-admin-Applications,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Applications'],False,11-18-2021 12:18:00,11-18-2021 12:35:45,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-admin-Claims,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Claims'],False,11-18-2021 12:18:00,11-18-2021 12:35:44,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-DW,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\DW'],False,11-18-2021 12:18:00,11-18-2021 12:35:49,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-EA,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\EA'],False,11-18-2021 12:18:00,11-18-2021 12:35:47,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-admin-Finance,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Finance'],False,11-18-2021 12:18:00,11-18-2021 12:35:44,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-Governanace,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Governanace'],False,11-18-2021 12:19:01,11-18-2021 12:36:51,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-admin-IntOps,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IntOps'],False,11-18-2021 12:19:01,11-18-2021 12:36:51,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-IT,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\IT'],False,11-18-2021 12:19:01,11-18-2021 12:36:48,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-admin-Phoenix,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Phoenix'],False,11-18-2021 12:19:01,11-18-2021 12:36:52,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-admin-Public,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Public'],False,11-18-2021 12:19:01,11-18-2021 12:36:52,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-Risk-Compliance,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Risk-Compliance'],False,11-18-2021 12:19:01,11-18-2021 12:36:51,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-Security-Guards,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Security-Guards'],False,11-18-2021 12:19:01,11-18-2021 12:36:50,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-admin-Underwriting,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Underwriting'],False,11-18-2021 12:19:01,11-18-2021 12:36:48,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-users,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\users'],False,11-18-2021 12:19:01,11-18-2021 12:36:47,0,0,No Replicatoin Cluster,kFailure,kFailure
+10.26.1.78-Executive,kGenericNas,,Savage_replicate,14,No extended retention,['\\\\10.26.1.78\\Executive'],False,11-19-2021 10:30:00,11-19-2021 10:47:45,0,0,AshishCluster,kFailure,kFailure
+share,kView,,Savage_replicate,14,No extended retention,['share'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IR2014PRD,kView,,Savage_replicate,14,No extended retention,['IR2014PRD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IR2015PRD,kView,,Savage_replicate,14,No extended retention,['IR2015PRD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IR2016PRD,kView,,Savage_replicate,14,No extended retention,['IR2016PRD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IR2017PRD,kView,,Savage_replicate,14,No extended retention,['IR2017PRD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IR2018PRD,kView,,Savage_replicate,14,No extended retention,['IR2018PRD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IR2019PRD,kView,,Savage_replicate,14,No extended retention,['IR2019PRD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IR2020PRD,kView,,Savage_replicate,14,No extended retention,['IR2020PRD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IR2021PRD,kView,,Savage_replicate,14,No extended retention,['IR2021PRD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+EIPIR,kView,,Savage_replicate,14,No extended retention,['EIPIR'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+EIPPROD,kView,,Savage_replicate,14,No extended retention,['EIPPROD'],False,11-18-2021 12:44:00,11-18-2021 12:44:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+Applications,kView,,Savage_replicate,14,No extended retention,['Applications'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+admin-Claims,kView,,Savage_replicate,14,No extended retention,['admin-Claims'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+DW,kView,,Savage_replicate,14,No extended retention,['DW'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+EA,kView,,Savage_replicate,14,No extended retention,['EA'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+Executive,kView,,Savage_replicate,14,No extended retention,['Executive'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+Finance,kView,,Savage_replicate,14,No extended retention,['Finance'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+Governanace,kView,,Savage_replicate,14,No extended retention,['Governanace'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IntOps,kView,,Savage_replicate,14,No extended retention,['IntOps'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+IT,kView,,Savage_replicate,14,No extended retention,['IT'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+admin-Phoenix,kView,,Savage_replicate,14,No extended retention,['admin-Phoenix'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+Public,kView,,Savage_replicate,14,No extended retention,['Public'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+Risk-Compliance,kView,,Savage_replicate,14,No extended retention,['Risk-Compliance'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+Security-Guards,kView,,Savage_replicate,14,No extended retention,['Security-Guards'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+Underwriting,kView,,Savage_replicate,14,No extended retention,['Underwriting'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+users,kView,,Savage_replicate,14,No extended retention,['users'],False,11-18-2021 12:47:01,11-18-2021 12:47:06,0,0,No Replicatoin Cluster,kSuccess,kSuccess
+dttc_test3,kPhysical,,Bronze,30,90,['10.26.1.78'],False,11-18-2021 15:14:01,11-18-2021 15:25:15,0,0,No Replicatoin Cluster,kFailure,kFailure
