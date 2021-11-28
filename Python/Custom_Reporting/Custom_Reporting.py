@@ -93,6 +93,7 @@ class CohesityProtectionJobObject(object):
         self.job_names = []
         
     def create_job_dictionary(self):
+        #Create initial dictionary
         for job in self.protection_job_objects:
             if '_deleted_'.upper() not in job.name:
                 self.job_dict[job.name] = {}
@@ -184,9 +185,19 @@ class CohesityProtectionJobObject(object):
                     
                     if len(runs) >= 2:
                         self.appended_job_dict[name]["Previous Backup Status"] = runs[1].backup_run.status
+                        self.appended_job_dict[name]["Previous Job Start Time"] = datetime.datetime.fromtimestamp(runs[1].backup_run.stats.start_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
                     else:
-                        self.appended_job_dict[name]["Previous Backup Status"] = "No Previous Run Found"       
+                        self.appended_job_dict[name]["Previous Backup Status"] = "No Previous Run Found"         
         return self.appended_job_dict
+        
+    def covert_bytes_to_gb(self, bytes):
+        pass
+    
+    def covert_epoch_to_msecs(self, epoch):
+        return datetime.datetime.fromtimestampe(epoch/10**3)
+    
+    def covert_epoch_to_usecs(self, epoch):
+        return datetime.datetime.fromtimestampe(epoch/10**6)
                 
     def clean_appended_dict(self, appended_job_dict, job_names_list):
         self.appended_job_dict = appended_job_dict
@@ -207,7 +218,7 @@ class CohesityProtectionJobObject(object):
         
         #export to csv
         df.to_csv(self.report_name, index=False)
-        #Skip index row and overwrite csv
+        #Skip index row and overwrite
         dff =pd.read_csv(self.report_name, skiprows=1)
         dff.to_csv(self.report_name, index=False)
         
