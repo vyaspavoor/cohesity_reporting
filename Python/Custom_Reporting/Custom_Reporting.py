@@ -82,8 +82,13 @@ class CohesityProtectionJobObject(object):
         
         #Setup report naming
         self.cluster_name = self.cluster.name
-        self.cluster_time = datetime.datetime.fromtimestamp(self.cluster.current_time_msecs/10**3).strftime('%H%M%S_%m%d%Y')
+        self.cluster_time = self.convert_epoch_to_msecs(self.cluster.current_time_msecs).strftime('%H%M%S_%m%d%Y')
         self.report_name = self.cluster_name + '_' + self.cluster_time +'_Backupreport.csv'
+        
+        #setup date column
+        self.cluster_date = self.convert_epoch_to_msecs(self.cluster.current_time_msecs).strftime('%m-%d-%Y')
+         
+        self.path = "~/"
         
         #Declare empty dictionary
         self.job_dict = {}
@@ -92,11 +97,11 @@ class CohesityProtectionJobObject(object):
         self.job_names = []
         
      #Lambda Methods 
-    covert_bytes_to_gb = lambda self, bytes_to_convert: bytes_to_convert / 1073741824
+    convert_bytes_to_gb = lambda self, bytes_to_convert: bytes_to_convert / 1073741824
     
-    covert_epoch_to_msecs = lambda self, epoch: datetime.datetime.fromtimestampe(epoch/10**3)
+    convert_epoch_to_msecs = lambda self, epoch: datetime.datetime.fromtimestamp(epoch/10**3)
    
-    covert_epoch_to_usecs = lambda self, epoch: datetime.datetime.fromtimestampe(epoch/10**6)
+    convert_epoch_to_usecs = lambda self, epoch: datetime.datetime.fromtimestamp(epoch/10**6)
     
     #Declared Methods
     def create_job_dictionary(self):
@@ -109,7 +114,11 @@ class CohesityProtectionJobObject(object):
                 self.job_dict[job.name]["Source Id"] = job.source_ids
                 self.job_dict[job.name]["Policy Id"] = job.policy_id
                 self.job_dict[job.name]["Environment"] = job.environment
-                self.job_dict[job.name]["Description"] = job.description         
+                if   job.description != None and job.description.__contains__("|"):
+                    self.job_dict[job.name]["Description"] = job.description[:job.description.index("|")]
+                else:
+                    self.job_dict[job.name]["Description"] = job.description
+                self.job_dict[job.name]["Current Date"] = self.cluster_date
         return self.job_dict
     
     def create_job_name_list(self, job_dictionary):
@@ -174,17 +183,19 @@ class CohesityProtectionJobObject(object):
                     runs.append(job) 
                     self.appended_job_dict[name]["Snapshot Deleted"] = runs[0].backup_run.snapshots_deleted
                     if  runs[0].backup_run.stats.start_time_usecs != None:
-                        self.appended_job_dict[name]["Job Start Time"] = datetime.datetime.fromtimestamp(runs[0].backup_run.stats.start_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
+                        self.appended_job_dict[name]["Job Start Time"] = self.convert_epoch_to_usecs(runs[0].backup_run.stats.start_time_usecs).strftime('%m-%d-%Y %H:%M:%S')
                     else:
                        self.appended_job_dict[name]["Job Start Time"] = "Job not Started"
                     if runs[0].backup_run.stats.end_time_usecs != None:
-                        self.appended_job_dict[name]["Job End Time"] = datetime.datetime.fromtimestamp(runs[0].backup_run.stats.end_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
+                        self.appended_job_dict[name]["Job End Time"] = self.convert_epoch_to_usecs(runs[0].backup_run.stats.end_time_usecs).strftime('%m-%d-%Y %H:%M:%S')
                     else:
                         self.appended_job_dict[name]["Job End Time"] = "Job not started" 
-                    self.appended_job_dict[name]["Total GiB Read"] = self.covert_bytes_to_gb(runs[0].backup_run.stats.total_bytes_read_from_source)
-                    self.appended_job_dict[name]["Total GiB WRitten"] = self.covert_bytes_to_gb(runs[0].backup_run.stats.total_logical_backup_size_bytes)
-                    #print(self.covert_bytes_to_gb(runs[0].backup_run.stats.total_bytes_read_from_source))
-                    self.appended_job_dict[name]["Total Logical Size in  Gib"] = self.covert_bytes_to_gb(runs[0].backup_run.stats.total_logical_backup_size_bytes)
+                    self.appended_job_dict[name]["Total GiB Read"] = self.convert_bytes_to_gb(runs[0].backup_run.stats.total_bytes_read_from_source)
+                    if runs[0].backup_run.stats.total_physical_backup_size_bytes != None:
+                        self.appended_job_dict[name]["Total GiB Written"] = self.convert_bytes_to_gb(runs[0].backup_run.stats.total_physical_backup_size_bytes)
+                    else:
+                        self.appended_job_dict[name]["Total GiB Written"] = 0
+                    self.appended_job_dict[name]["Total Logical Size in  GiB"] = self.convert_bytes_to_gb(runs[0].backup_run.stats.total_logical_backup_size_bytes)
                     
                     if runs[0].copy_run[0].target.replication_target != None:
                         self.appended_job_dict[name]["Replication Target"] = runs[0].copy_run[0].target.replication_target.cluster_name
@@ -194,7 +205,12 @@ class CohesityProtectionJobObject(object):
                     
                     if len(runs) >= 2:
                         self.appended_job_dict[name]["Previous Backup Status"] = runs[1].backup_run.status
-                        self.appended_job_dict[name]["Previous Job Start Time"] = datetime.datetime.fromtimestamp(runs[1].backup_run.stats.start_time_usecs/10**6).strftime('%m-%d-%Y %H:%M:%S')
+                        self.appended_job_dict[name]["Previous Job Start Time"] = self.convert_epoch_to_usecs(runs[1].backup_run.stats.start_time_usecs).strftime('%m-%d-%Y %H:%M:%S')
+                        self.appended_job_dict[name]["Previous Job End Time"] = self.convert_epoch_to_usecs(runs[1].backup_run.stats.end_time_usecs).strftime('%m-%d-%Y %H:%M:%S')
+                        if runs[1].backup_run.stats.total_physical_backup_size_bytes != None:
+                            self.appended_job_dict[name]["Previous Total GiB Written"] = self.convert_bytes_to_gb(runs[1].backup_run.stats.total_physical_backup_size_bytes)
+                        else:
+                            self.appended_job_dict[name]["Previous Total GiB Written"] = 0
                     else:
                         self.appended_job_dict[name]["Previous Backup Status"] = "No Previous Run Found"         
         
@@ -222,7 +238,7 @@ class CohesityProtectionJobObject(object):
         df.to_csv(self.report_name, index=False)
         #Skip index row and overwrite
         dff =pd.read_csv(self.report_name, skiprows=1)
-        dff.to_csv(self.report_name, index=False)
+        dff.to_csv(self.path + self.report_name, index=False)
         
 
 def main():
