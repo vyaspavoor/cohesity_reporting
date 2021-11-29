@@ -26,27 +26,26 @@ class CohesityUserAuthentication(object):
 
     #Authenticate to the cluster with credentials
 
-    def user_auth(self):
-        try:
-            return CohesityClient(self.cluster_url, self.username, self.password, self.domain)
-        except RequestErrorErrorException as e: 
-            print(e)
-        except APIException as e:
-            print(e)
+    # Lambda Methods functions
+    try:
+        user_auth = lambda self: CohesityClient(self.cluster_url, self.username, self.password, self.domain)
+    except RequestErrorErrorException as e: 
+        print(e)
+    except APIException as e:
+        print(e)
     
+    get_cluster_url = lambda self: self.cluster_url
+    
+    get_cluster_user = lambda self: self.username
+    
+    get_cluster_domain = lambda self: self.domain
+    
+    #Declared Methods
     def get_bearer_token(self):
         self.access_token = self.cohesity_client.access_tokens
         bearer_token = self.access_token.create_generate_access_token(self.body)
         return bearer_token
 
-
-    def get_cluster_url(self):
-        return self.cluster_url
-
-    def get_cluster_user(self):
-        return self.username
-    def get_cluster_domain(self):
-        return self.domain
 
 class CohesityProtectionJobObject(object):
     
@@ -92,6 +91,14 @@ class CohesityProtectionJobObject(object):
         #Declare job_name list
         self.job_names = []
         
+     #Lambda Methods 
+    covert_bytes_to_gb = lambda self, bytes_to_convert: bytes_to_convert / 1073741824
+    
+    covert_epoch_to_msecs = lambda self, epoch: datetime.datetime.fromtimestampe(epoch/10**3)
+   
+    covert_epoch_to_usecs = lambda self, epoch: datetime.datetime.fromtimestampe(epoch/10**6)
+    
+    #Declared Methods
     def create_job_dictionary(self):
         #Create initial dictionary
         for job in self.protection_job_objects:
@@ -111,7 +118,6 @@ class CohesityProtectionJobObject(object):
         return self.job_names
         
     def append_policy_name_dictionary(self, appended_job_dict, job_name_list):
-        count = 0
         #iterate through policy object and set attributes
         self.appended_job_dict = appended_job_dict
         for name in job_name_list:
@@ -157,7 +163,7 @@ class CohesityProtectionJobObject(object):
         for name in job_names_list:
             runs = []
             try:
-                job_runs = self.protection_runs.get_protection_runs(job_id = self.appended_job_dict[name]["Job Id"], num_runs= 2)
+                job_runs = self.protection_runs.get_protection_runs(job_id = self.appended_job_dict[name]["Job Id"], num_runs = 2)
             except RequestErrorErrorException as e: 
                 continue
             except APIException as e:
@@ -176,8 +182,10 @@ class CohesityProtectionJobObject(object):
                     else:
                         self.appended_job_dict[name]["Job End Time"] = "Job not started" 
                     self.appended_job_dict[name]["Total GiB Read"] = self.covert_bytes_to_gb(runs[0].backup_run.stats.total_bytes_read_from_source)
+                    self.appended_job_dict[name]["Total GiB WRitten"] = self.covert_bytes_to_gb(runs[0].backup_run.stats.total_logical_backup_size_bytes)
                     #print(self.covert_bytes_to_gb(runs[0].backup_run.stats.total_bytes_read_from_source))
                     self.appended_job_dict[name]["Total Logical Size in  Gib"] = self.covert_bytes_to_gb(runs[0].backup_run.stats.total_logical_backup_size_bytes)
+                    
                     if runs[0].copy_run[0].target.replication_target != None:
                         self.appended_job_dict[name]["Replication Target"] = runs[0].copy_run[0].target.replication_target.cluster_name
                     else:
@@ -192,14 +200,6 @@ class CohesityProtectionJobObject(object):
         
         return self.appended_job_dict
         
-    def covert_bytes_to_gb(self, bytes):
-        return bytes / 1073741824
-    
-    def covert_epoch_to_msecs(self, epoch):
-        return datetime.datetime.fromtimestampe(epoch/10**3)
-    
-    def covert_epoch_to_usecs(self, epoch):
-        return datetime.datetime.fromtimestampe(epoch/10**6)
                 
     def clean_appended_dict(self, appended_job_dict, job_names_list):
         self.appended_job_dict = appended_job_dict
